@@ -5,7 +5,7 @@ import re
 
 
 HASH_RE = re.compile(r'#(#|\s|-|\(|\))+#')
-NEWLINE_RE = re.compile(r'<br>|<br/>|<br\s+/>|\n')
+NEWLINE_RE = re.compile(r'<br>|<br/>|<br\s+/>|\r\n|\n|\r|\v|\f|\u2028|\u2029')
 
 
 def nested_html_unescape(text):
