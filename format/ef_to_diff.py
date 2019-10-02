@@ -45,12 +45,12 @@ def ef_to_wdiff(text, ignore_type=('HL',)):
     return ' '.join(token for token in text.split(' ') if token)
 
 
-def main(iterable):
+def main(iterable, ignore_type=('HL',)):
     for text in map(str.strip, iterable):
         print(ef_to_wdiff(text, ignore_type))
 
 
 if __name__ == '__main__':
     import sys
-    ignore_type = set(sys.argv[1:])
+    ignore_type = set(sys.argv[1:]) or ('HL',)
     main(sys.stdin, ignore_type)
