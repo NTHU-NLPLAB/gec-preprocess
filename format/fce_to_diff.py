@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
-import sys
 from bs4 import BeautifulSoup
 
-from ..utils import restore_xml_escape
+from .diff_format import gen_diff_token
 
 
-edit_re = re.compile(r'<NS type="\w+">(((?!<NS).)*?)</NS>')
+EDIT_RE = re.compile(r'<NS type="\w+">(((?!<NS).)*?)</NS>')
 
 
-def parse_edit(ns_token):
+def parse_ns_token(ns_token):
     soup = BeautifulSoup(ns_token, 'lxml-xml')
     err_type = soup.select_one('NS').attrs.get('type', '')
     i_node = soup.select_one('i')
@@ -19,45 +18,43 @@ def parse_edit(ns_token):
     return ori, cor, err_type
 
 
-def gen_edit_token(ori, cor, err_type):
-    edit_token = ''
+def change_to_diff(ns_token, ignore_type=set()):
+    original, corrected, error_type = parse_ns_token(ns_token)
 
-    # format
-    ori = ori.strip().replace(' ', '\u3000')
-    cor = cor.strip().replace(' ', '\u3000')
-    err_type = err_type.replace(' and ', ',')
-
-    if ori:  # delete
-        edit_token += f'[-{ori}//{err_type}-]'
-    if cor:  # insert
-        edit_token += f'{{+{cor}//{err_type}+}}'
-    return edit_token
+    # if the error is to be ignored
+    if any(t in ignore_type for t in error_type.split(',')):
+        token = corrected
+    else:
+        token = gen_diff_token(original, corrected, error_type)
+    return f' {token} '
 
 
-def fce_to_wdiff(text, ignore_type=[]):
-    while edit_re.search(text):
-        for match in edit_re.finditer(text):
-            ns_token = match.group(0)
-            ori, cor, err_type = parse_edit(ns_token)
-            edit_token = gen_edit_token(ori, cor, err_type)
-            text = text.replace(ns_token, f' {edit_token} ')
+def fce_to_wdiff(text, ignore_type=set()):
+    while EDIT_RE.search(text):
+        ns_tokens = {match.group(0) for match in EDIT_RE.finditer(text)}
+        for ns_token in ns_tokens:
+            diff_token = change_to_diff(ns_token, ignore_type)
+            text = text.replace(ns_token, diff_token)
 
     # remove consecutive spaces
     text = ' '.join(token for token in text.split(' ') if token)
-    # restore escaped symbols
-    text = restore_xml_escape(text)
     return text
 
 
-def main():
-    ignore_type = set(sys.argv[1:])
-
-    for line in sys.stdin:
-        line = line.strip()
+def iter_fce(iterable):
+    for line in iterable:
         if line.startswith('<p>') and line.endswith('</p>'):
-            paragraph = line[3:-4]
-            print(fce_to_wdiff(paragraph, ignore_type))
+            yield line[3:-4]
+
+
+def main(iterable, ignore_type=set()):
+    for text in iter_fce(map(str.strip, iterable)):
+        print(fce_to_wdiff(text, ignore_type))
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    ignore_type = set(sys.argv[1:])
+    main(sys.stdin, ignore_type)
+
+# cat  | python -m gecdiff.format.fce_to_diff CE ID
