@@ -33,7 +33,7 @@ def fce_to_wdiff(text, ignore_type=set()):
     while EDIT_RE.search(text):
         ns_tokens = {match.group(0) for match in EDIT_RE.finditer(text)}
         for ns_token in ns_tokens:
-            diff_token = change_to_diff(ns_token, ignore_type)
+            diff_token = ns_token_to_diff(ns_token, ignore_type)
             text = text.replace(ns_token, diff_token)
 
     # remove consecutive spaces
