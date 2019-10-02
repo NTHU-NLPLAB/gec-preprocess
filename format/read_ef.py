@@ -2,7 +2,7 @@
 import fileinput
 
 
-def iter_writings(iterator):
+def iter_ef_writings(iterator):
     stack, in_text = [], False
     for line in map(str.strip, iterator):
         if line == '<text>':
@@ -16,6 +16,6 @@ def iter_writings(iterator):
 
 
 if __name__ == '__main__':
-    for texts in iter_writings(fileinput.input()):
+    for texts in iter_ef_writings(fileinput.input()):
         for text in texts:
             print(text)

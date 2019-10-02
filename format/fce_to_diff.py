@@ -18,7 +18,7 @@ def parse_ns_token(ns_token):
     return ori, cor, err_type
 
 
-def change_to_diff(ns_token, ignore_type=set()):
+def ns_token_to_diff(ns_token, ignore_type=set()):
     original, corrected, error_type = parse_ns_token(ns_token)
 
     # if the error is to be ignored

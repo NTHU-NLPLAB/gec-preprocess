@@ -22,7 +22,7 @@ def parse_ef_change(content):
     return original, corrected, error_type
 
 
-def change_to_diff(change_token, ignore_type=()):
+def ef_change_to_diff(change_token, ignore_type=()):
     original, corrected, error_type = parse_ef_change(change_token)
 
     # if the error is to be ignored
@@ -33,7 +33,7 @@ def change_to_diff(change_token, ignore_type=()):
     return f' {token} '
 
 
-def convert_to_wdiff(text, ignore_type=('HL',)):
+def ef_to_wdiff(text, ignore_type=('HL',)):
     # nested edit
     while EDIT_RE.search(text):
         change_tokens = {match.group(0) for match in EDIT_RE.finditer(text)}

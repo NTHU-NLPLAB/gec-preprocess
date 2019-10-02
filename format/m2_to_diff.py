@@ -36,7 +36,7 @@ def parse_m2(lines):
         yield sentence, edits
 
 
-def to_diff(sent, edits):
+def m2_to_diff(sent, edits):
     tokens = sent.split()
     last = 0
     for start, end, err_type, correction, annotator in edits:
@@ -54,7 +54,7 @@ def main(iterator):
         # print(sent, file=sys.stderr)
         # print(edits, file=sys.stderr)
         for annotator, edits in annotation.items():
-            print(' '.join(to_diff(sent, edits)))
+            print(' '.join(m2_to_diff(sent, edits)))
 
 
 if __name__ == '__main__':
