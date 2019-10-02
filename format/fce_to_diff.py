@@ -46,13 +46,13 @@ def fce_to_wdiff(text, ignore_type=set()):
 
 
 def iter_fce(iterable):
-    for line in iterable:
+    for line in map(str.strip, iterable):
         if line.startswith('<p>') and line.endswith('</p>'):
             yield line[3:-4]
 
 
 def main(iterable, ignore_type=set()):
-    for text in iter_fce(map(str.strip, iterable)):
+    for text in iter_fce(iterable):
         print(fce_to_wdiff(text, ignore_type))
 
 

@@ -10,6 +10,7 @@ EDIT_RE = re.compile('<change>(((?!<change>).)*?)</change>')
 
 def parse_ef_change(content):
     soup = BeautifulSoup(content, 'lxml')
+    # ".text" vs. ".decode_contents"
     original = soup.select_one('selection').decode_contents()
     corrected = soup.select_one('tag correct').decode_contents()
     error_type = soup.select_one('tag symbol').decode_contents()
@@ -34,6 +35,7 @@ def ef_change_to_diff(change_token, ignore_type=()):
 
 
 def ef_to_wdiff(text, ignore_type=('HL',)):
+    text = text.strip()
     # nested edit
     while EDIT_RE.search(text):
         change_tokens = {match.group(0) for match in EDIT_RE.finditer(text)}
@@ -46,7 +48,7 @@ def ef_to_wdiff(text, ignore_type=('HL',)):
 
 
 def main(iterable, ignore_type=('HL',)):
-    for text in map(str.strip, iterable):
+    for text in iterable:
         print(ef_to_wdiff(text, ignore_type))
 
 
