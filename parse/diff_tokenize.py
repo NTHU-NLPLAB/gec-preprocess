@@ -41,7 +41,7 @@ def mask_edits(text):
     return ' '.join(' '.join(tokens).split()), edits
 
 
-def tokenize_doc(text):
+def tokenize_diff_text(text):
     # mask edit tokens first to avoid being segmented
     # I have {+a+} pen. => I have {} pen.
     text_masked, edits = mask_edits(text)
@@ -59,15 +59,11 @@ def tokenize_doc(text):
     return '\n'.join(sents).format(*edits).splitlines()
 
 
-def tokenize_diff_text(text):
-    text = normalize_hash(text)
-    text = recover_quotewords(text)
-    return tokenize_doc(text)
-
-
 def main(iterable):
-    for doc in iterable:
-        for sentence in tokenize_doc(doc):
+    for doc in map(str.strip, iterable):
+        doc = normalize_hash(doc)
+        doc = recover_quotewords(doc)
+        for sentence in tokenize_diff_text(doc):
             print(sentence)
 
 
@@ -75,4 +71,4 @@ if __name__ == '__main__':
     import logging
     import fileinput
     logging.basicConfig(level=logging.INFO)
-    main(map(str.strip, fileinput.input()))
+    main(fileinput.input())
