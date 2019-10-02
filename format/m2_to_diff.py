@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import fileinput
 from collections import deque, defaultdict
 
 from .diff import gen_diff_token
@@ -17,8 +16,7 @@ def parse_annotation(line):
 def parse_m2(lines):
     def iter_records(iterable):
         stack = deque()
-        for line in iterable:
-            line = line.strip()
+        for line in map(str.strip, iterable):
             if line:
                 stack.append(line)
             else:
@@ -51,13 +49,12 @@ def m2_to_diff(sent, edits):
 
 def main(iterator):
     for sent, annotation in parse_m2(iterator):
-        # print(sent, file=sys.stderr)
-        # print(edits, file=sys.stderr)
         for annotator, edits in annotation.items():
             print(' '.join(m2_to_diff(sent, edits)))
 
 
 if __name__ == '__main__':
+    import fileinput
     main(fileinput.input())
 
-# cat official-2014.1.m2 | python m2_to_parallel.py >conll2014.1.tgt 2>conll2014.1.src
+# cat official-2014.1.m2 | python m2_to_diff.py
