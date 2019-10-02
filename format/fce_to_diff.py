@@ -2,7 +2,7 @@
 import re
 from bs4 import BeautifulSoup
 
-from .diff import gen_diff_token
+from .diff import gen_diff_token, iter_edit
 
 
 EDIT_RE = re.compile(r'<NS type="\w+">(((?!<NS).)*?)</NS>')
@@ -20,6 +20,10 @@ def parse_ns_token(ns_token):
 
 def ns_token_to_diff(ns_token, ignore_type=set()):
     original, corrected, error_type = parse_ns_token(ns_token)
+
+    # try to flattern nested edits
+    original = ' '.join(iter_edit(original.strip(), 'delete'))
+    corrected = ' '.join(iter_edit(corrected.strip(), 'insert'))
 
     # if the error is to be ignored
     if any(t in ignore_type for t in error_type.split(',')):
