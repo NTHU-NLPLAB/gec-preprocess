@@ -37,6 +37,7 @@ def parse_m2(lines):
 def m2_to_diff(sent, edits):
     tokens = sent.split()
     last = 0
+    # TODO: handle muti-annotator
     for start, end, err_type, correction, annotator in edits:
         if last < start:
             yield ' '.join(tokens[last:start])
