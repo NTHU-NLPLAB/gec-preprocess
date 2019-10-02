@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import re
-import sys
 from bs4 import BeautifulSoup
 
 from .diff_format import gen_diff_token, iter_edit
@@ -46,12 +45,12 @@ def convert_to_wdiff(text, ignore_type=('HL',)):
     return ' '.join(token for token in text.split(' ') if token)
 
 
-def main():
-    ignore_type = set(sys.argv[1:])
-
-    for text in sys.stdin:
-        print(convert_to_wdiff(text.strip(), ignore_type))
+def main(iterable):
+    for text in map(str.strip, iterable):
+        print(convert_to_wdiff(text, ignore_type))
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    ignore_type = set(sys.argv[1:])
+    main(sys.stdin, ignore_type)
