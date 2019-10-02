@@ -56,3 +56,5 @@ if __name__ == '__main__':
     import sys
     ignore_type = set(sys.argv[1:]) or ('HL',)
     main(sys.stdin, ignore_type)
+
+# cat EF201403.writings.txt | python ef_to_diff.py

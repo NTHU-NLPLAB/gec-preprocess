@@ -19,3 +19,5 @@ if __name__ == '__main__':
     for texts in iter_ef_writings(fileinput.input()):
         for text in texts:
             print(text)
+
+# cat EF201403_selection7.xml | python read_ef.py

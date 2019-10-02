@@ -61,4 +61,4 @@ if __name__ == '__main__':
     ignore_type = set(sys.argv[1:])
     main(sys.stdin, ignore_type)
 
-# cat  | python -m gecdiff.format.fce_to_diff CE ID
+# cat  | python fce_to_diff.py CE ID

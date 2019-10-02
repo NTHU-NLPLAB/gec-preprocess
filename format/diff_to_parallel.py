@@ -21,4 +21,4 @@ if __name__ == '__main__':
     import fileinput
     main(fileinput.input())
 
-# cat diff.txt|python diff_to_parallel.py
+# cat diff.txt | python diff_to_parallel.py
