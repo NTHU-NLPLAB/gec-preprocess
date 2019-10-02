@@ -3,7 +3,7 @@
 import fileinput
 from collections import deque, defaultdict
 
-from .diff_format import gen_diff_token
+from .diff import gen_diff_token
 
 
 def parse_annotation(line):

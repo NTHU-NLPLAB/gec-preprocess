@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import fileinput
 
-from .diff_format import iter_edit
+from .diff import iter_edit
 
 
 def diff_to_parallel(text, return_list=False):

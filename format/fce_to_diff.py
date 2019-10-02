@@ -2,7 +2,7 @@
 import re
 from bs4 import BeautifulSoup
 
-from .diff_format import gen_diff_token
+from .diff import gen_diff_token
 
 
 EDIT_RE = re.compile(r'<NS type="\w+">(((?!<NS).)*?)</NS>')

@@ -2,7 +2,7 @@
 import re
 from bs4 import BeautifulSoup
 
-from .diff_format import gen_diff_token, iter_edit
+from .diff import gen_diff_token, iter_edit
 
 
 EDIT_RE = re.compile('<change>(((?!<change>).)*?)</change>')
