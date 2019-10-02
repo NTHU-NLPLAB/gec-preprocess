@@ -33,5 +33,5 @@ def iter_edit(text, iter_type):
             items = parse_diff_token(token)
             if items[index]:
                 yield items[index]
-        else:
+        elif token:
             yield token
