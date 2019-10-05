@@ -26,12 +26,13 @@ def parse_diff_token(edit_token, space_escape='\u3000'):
     return delete, insert, err_type
 
 
-def iter_edit(text, iter_type):
+def iter_edit(text, iter_type, skip_none=True):
     index = ('delete', 'insert', 'error').index(iter_type)
-    for token in text.split(' '):
+    for token in filter(None, text.split(' ')):
         if token.startswith('{+') or token.startswith('[-'):
             items = parse_diff_token(token)
-            if items[index]:
-                yield items[index]
-        elif token:
-            yield token
+        else:
+            items = (token, token, '')
+
+        if not skip_none or items[index]:
+            yield items[index]
