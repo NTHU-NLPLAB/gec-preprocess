@@ -52,7 +52,7 @@ def tokenize_diff_text(text):
     paragraphs = map(str.strip, text_masked.splitlines())
     # tokenize paragraph
     paragraphs = map(sent_tokenize, paragraphs)
-    # chain lines in all paragraphs
+    # chain sentences in all paragraphs
     sents = chain(*paragraphs)
 
     # restore masked edit
