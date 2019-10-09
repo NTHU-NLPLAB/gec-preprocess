@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import fileinput
 
 
 def iter_ef_writings(iterator):
@@ -15,9 +14,14 @@ def iter_ef_writings(iterator):
             stack.append(line)
 
 
-if __name__ == '__main__':
-    for texts in iter_ef_writings(fileinput.input()):
+def main(iterable):
+    for texts in iter_ef_writings(iterable):
         for text in texts:
             print(text)
+
+
+if __name__ == '__main__':
+    import fileinput
+    main(fileinput.input())
 
 # cat EF201403_selection7.xml | python read_ef.py

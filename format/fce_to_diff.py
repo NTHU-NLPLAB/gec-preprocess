@@ -59,6 +59,6 @@ def main(iterable, ignore_type=set()):
 if __name__ == '__main__':
     import sys
     ignore_type = set(sys.argv[1:])
-    main(sys.stdin, ignore_type)
+    main(sys.stdin, ignore_type=ignore_type)
 
 # cat  | python fce_to_diff.py CE ID
