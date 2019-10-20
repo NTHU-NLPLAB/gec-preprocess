@@ -6,7 +6,7 @@ from .diff import gen_diff_token
 
 
 def parse_annotation(line):
-    position, err_type, correction, _, _, annotator = line.split('|||')
+    position, err_type, correction, _, _, annotator = line[2:].split('|||')
     start, end = [int(index) for index in position.split()]
     annotator = int(annotator)
     correction = correction.strip()
@@ -24,12 +24,12 @@ def parse_m2(lines):
                 stack.clear()
         assert len(stack) == 0
 
-    for sentence, *edits in iter_records(lines):
+    for sentence, *editstr in iter_records(lines):
         assert sentence.startswith('S ')
-        assert all(edit.startswith('A ') for edit in edits)
+        assert all(edit.startswith('A ') for edit in editstr)
         sentence = sentence[2:].strip()
         edits = defaultdict(deque)
-        for *info, annotator in edits:
+        for *info, annotator in map(parse_annotation, editstr):
             edits[annotator].append(tuple(info))
         yield sentence, edits
 
@@ -38,7 +38,7 @@ def m2_to_diff(sent, edits):
     tokens = sent.split()
     last = 0
     # TODO: handle muti-annotator
-    for start, end, err_type, correction, annotator in edits:
+    for start, end, err_type, correction in edits:
         if last < start:
             yield ' '.join(tokens[last:start])
         original = ' '.join(tokens[start:end])
