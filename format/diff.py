@@ -2,7 +2,7 @@
 import re
 
 
-EDIT_RE = re.compile(r'(\[-(?P<delete>[^ ]*?)-\]|\{\+(?P<insert>[^ ]*?)\+\})+(\((?P<type>[A-Za-z,]+)\))?')
+EDIT_RE = re.compile(r'(\[-(?P<delete>[^ ]*?)-\]|\{\+(?P<insert>[^ ]*?)\+\})+(\((?P<type>[^)]+)\))?')
 
 
 def gen_diff_token(delete, insert, err_type=None, space_escape='\u3000'):
