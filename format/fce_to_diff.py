@@ -12,13 +12,13 @@ def parse_ns_token(ns_token):
     soup = BeautifulSoup(ns_token, 'lxml-xml')
     err_type = soup.select_one('NS').attrs.get('type', '')
     i_node = soup.select_one('i')
-    ori = i_node.text if i_node else ''
+    ori = i_node.decode_contents() if i_node else ''
     c_node = soup.select_one('c')
-    cor = c_node.text if c_node else ''
+    cor = c_node.decode_contents() if c_node else ''
     return ori, cor, err_type
 
 
-def ns_token_to_diff(ns_token, ignore_type=set()):
+def ns_token_to_diff(ns_token, ignore_type=()):
     original, corrected, error_type = parse_ns_token(ns_token)
 
     # try to flattern nested edits
@@ -30,10 +30,11 @@ def ns_token_to_diff(ns_token, ignore_type=set()):
         token = corrected
     else:
         token = gen_diff_token(original, corrected, error_type)
+    # add space to separate tokens
     return f' {token} '
 
 
-def fce_to_wdiff(text, ignore_type=set()):
+def fce_to_wdiff(text, ignore_type=()):
     while EDIT_RE.search(text):
         ns_tokens = {match.group(0) for match in EDIT_RE.finditer(text)}
         for ns_token in ns_tokens:
@@ -51,7 +52,7 @@ def iter_fce(iterable):
             yield line[3:-4]
 
 
-def main(iterable, ignore_type=set()):
+def main(iterable, ignore_type=()):
     for text in iter_fce(iterable):
         print(fce_to_wdiff(text, ignore_type))
 
