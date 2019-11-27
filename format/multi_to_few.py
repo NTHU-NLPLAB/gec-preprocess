@@ -31,14 +31,10 @@ def multi_to_less(line, select_types):
     return simplified_line
 
 
-def iter_diff(iterable):
-    for line in map(str.strip, iterable):
-        yield line.split(' ')
-
-
 def main(iterable, select_types=()):
-    for line in iter_diff(iterable):
-        print(multi_to_less(line, select_types))
+    for line in map(str.strip, iterable):
+        tokens = line.split(' ')
+        print(multi_to_less(tokens, select_types))
 
 
 if __name__ == "__main__":
