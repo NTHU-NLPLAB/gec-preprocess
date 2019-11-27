@@ -8,7 +8,7 @@ from .diff import gen_diff_token
 def parse_annotation(line):
     position, err_type, correction, _, _, annotator = line[2:].split('|||')
     start, end = [int(index) for index in position.split()]
-    annotator = int(annotator)
+    # annotator = int(annotator)
     correction = correction.strip()
     return start, end, err_type, correction, annotator
 
@@ -19,25 +19,24 @@ def parse_m2(lines):
         for line in map(str.strip, iterable):
             if line:
                 stack.append(line)
-            else:
+            elif stack:
                 yield tuple(stack)
                 stack.clear()
         assert len(stack) == 0
 
-    for sentence, *editstr in iter_records(lines):
+    for sentence, *edits in iter_records(lines):
         assert sentence.startswith('S ')
-        assert all(edit.startswith('A ') for edit in editstr)
+        assert all(edit.startswith('A ') for edit in edits)
         sentence = sentence[2:].strip()
-        edits = defaultdict(deque)
-        for *info, annotator in map(parse_annotation, editstr):
-            edits[annotator].append(tuple(info))
-        yield sentence, edits
+        edits_dict = defaultdict(deque)
+        for *info, annotator in map(parse_annotation, edits):
+            edits_dict[annotator].append(tuple(info))
+        yield sentence, edits_dict
 
 
 def m2_to_diff(sent, edits):
     tokens = sent.split()
     last = 0
-    # TODO: handle muti-annotator
     for start, end, err_type, correction in edits:
         if last < start:
             yield ' '.join(tokens[last:start])
@@ -48,9 +47,9 @@ def m2_to_diff(sent, edits):
         yield ' '.join(tokens[last:])
 
 
-def main(iterator):
-    for sent, annotation in parse_m2(iterator):
-        for annotator, edits in annotation.items():
+def main(iterable):
+    for sent, annotations in parse_m2(iterable):
+        for annotator, edits in annotations.items():
             print(' '.join(m2_to_diff(sent, edits)))
 
 
