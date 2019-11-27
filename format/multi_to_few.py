@@ -36,13 +36,13 @@ def iter_diff(iterable):
         yield line.split(' ')
 
 
-def main(iterable, select_type=tuple()):
+def main(iterable, select_types=()):
     for line in iter_diff(iterable):
-        print(multi_to_less(line, select_type))
+        print(multi_to_less(line, select_types))
 
 
-select_type = tuple(sys.argv[1:])
-main(sys.stdin, select_type)
-
+if __name__ == "__main__":
+    select_types = tuple(sys.argv[1:])
+    main(sys.stdin, select_types)
 
 # cat fce.dev.r.noun.txt | python multi_to_one.py R:NOUN
