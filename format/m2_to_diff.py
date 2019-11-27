@@ -38,6 +38,8 @@ def edits_to_diff(sent, edits):
     tokens = sent.split()
     last = 0
     for start, end, err_type, correction in edits:
+        if start < 0 or end < 0 or err_type == 'noop':
+            continue
         if last < start:
             yield ' '.join(tokens[last:start])
         original = ' '.join(tokens[start:end])
