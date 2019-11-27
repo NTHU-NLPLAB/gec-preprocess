@@ -1,20 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 import sys
 import re
 
 
 def parse(word):
-    error = ''
     correction = ''
     error_correction, error_type = word.rsplit('(', 1)
-    
+
     if error_type.startswith('M'):
         correction = error_correction[2:-2]
     if error_type.startswith('R'):
         correction = error_correction.split('-]{+')[1][:-2]
-    
+
     return correction
 
 
@@ -42,9 +40,9 @@ def main(iterable, select_type=tuple()):
     for line in iter_diff(iterable):
         print(multi_to_less(line, select_type))
 
+
 select_type = tuple(sys.argv[1:])
 main(sys.stdin, select_type)
 
 
 # cat fce.dev.r.noun.txt | python multi_to_one.py R:NOUN
-
