@@ -29,6 +29,6 @@ def main(iterable, select_types=()):
 
 if __name__ == "__main__":
     select_types = tuple(sys.argv[1:])
-    main(sys.stdin, select_types=select_types))
+    main(sys.stdin, select_types=select_types)
 
 # cat fce.dev.r.noun.txt | python multi_to_one.py R:NOUN
