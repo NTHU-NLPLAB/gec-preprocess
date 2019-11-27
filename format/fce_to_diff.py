@@ -15,6 +15,9 @@ def parse_ns_token(ns_token):
     ori = i_node.decode_contents() if i_node else ''
     c_node = soup.select_one('c')
     cor = c_node.decode_contents() if c_node else ''
+    # error is detected but not edited
+    if not i_node and not c_node:
+        ori = cor = soup.decode_contents()
     return ori, cor, err_type
 
 
@@ -28,6 +31,9 @@ def ns_token_to_diff(ns_token, ignore_type=()):
     # if the error is to be ignored
     if any(t in ignore_type for t in error_type.split(',')):
         token = corrected
+    # if error is detected but not edited
+    elif original == corrected:
+        token = original
     else:
         token = gen_diff_token(original, corrected, error_type)
     # add space to separate tokens
