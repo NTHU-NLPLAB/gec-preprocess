@@ -13,7 +13,7 @@ def parse_annotation(line):
     return start, end, err_type, correction, annotator
 
 
-def parse_m2(lines):
+def parse_m2_file(lines):
     def iter_records(iterable):
         stack = deque()
         for line in map(str.strip, iterable):
@@ -34,7 +34,7 @@ def parse_m2(lines):
         yield sentence, edits_dict
 
 
-def m2_to_diff(sent, edits):
+def edits_to_diff(sent, edits):
     tokens = sent.split()
     last = 0
     for start, end, err_type, correction in edits:
@@ -48,9 +48,9 @@ def m2_to_diff(sent, edits):
 
 
 def main(iterable):
-    for sent, annotations in parse_m2(iterable):
+    for sent, annotations in parse_m2_file(iterable):
         for annotator, edits in annotations.items():
-            print(' '.join(m2_to_diff(sent, edits)))
+            print(' '.join(edits_to_diff(sent, edits)))
 
 
 if __name__ == '__main__':
