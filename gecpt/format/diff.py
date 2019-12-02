@@ -26,9 +26,10 @@ def parse_diff_token(edit_token):
     return delete, insert, err_type
 
 
-def iter_edit(text, iter_type, skip_empty=True):
+def iter_edit(iterable, iter_type, skip_empty=True):
     index = ('delete', 'insert', 'error').index(iter_type)
-    for token in filter(None, text.split(' ')):
+    tokens = iterable.split() if iterable is str else iterable
+    for token in filter(None, tokens):
         if token.startswith(('{+', '[-')):
             items = parse_diff_token(token)
         else:
