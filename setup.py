@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 setup(
-    name="gec-preprocess",
+    name="gecpt",
     version="0.0.1",
     author="JJC",
     author_email="jjc@nlplab.cc",
@@ -23,7 +23,7 @@ setup(
         "Topic :: Text Processing :: Linguistic",
     ],
     extras_require={
-        'parse':  ["spacy", "RXP"],
+        'parse':  ["spacy"],
     },
     # zip_safe=False,
     python_requires='>=3.6',
