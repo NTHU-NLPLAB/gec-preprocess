@@ -2,6 +2,8 @@
 import re
 from bs4 import BeautifulSoup
 
+from .edit import Edit
+
 
 EF_EDIT_RE = re.compile(r'<change>(((?!<change>).)*?)</change>')
 EF_TOKEN = (
@@ -20,11 +22,11 @@ def parse_ef_token(content):
 
     # replace ` and ` to commas
     error_type = error_type.replace(' and ', ',')
-    return original, corrected, error_type
+    return Edit(original, corrected, error_type)
 
 
-def gen_ef_token(delete, insert, err_type):
-    return EF_TOKEN.format(delete=delete, insert=insert, err_type=err_type)
+def gen_ef_token(edit: Edit):
+    return EF_TOKEN.format(**edit._asdict())
 
 
 def iter_ef_file(iterator):
