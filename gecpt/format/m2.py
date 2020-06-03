@@ -4,6 +4,9 @@ from collections import deque
 from itertools import groupby
 from operator import itemgetter
 
+from .edit import Edit
+
+
 M2_TOKEN = "{start} {end}|||{err_type}|||{correction}|||{unk1}}|||{unk2}|||{annotator}"
 
 
@@ -15,7 +18,7 @@ def parse_m2_token(line):
     return start, end, err_type, correction, annotator
 
 
-def gen_m2_token(start, end, err_type, correction, annotator, unk1='REQUIRED', unk2='-NONE-'):
+def gen_m2_token(start=-1, end=-1, err_type=None, correction='', annotator=0, unk1='REQUIRED', unk2='-NONE-'):
     return M2_TOKEN.format(start=start, end=end, err_type=err_type, correction=correction,
                            unk1=unk1, unk2=unk2, annotator=annotator)
 
@@ -34,7 +37,7 @@ def iter_m2(sent, edits, edit_token_func, ignore_type=()):
             yield correction
         else:
             original = ' '.join(tokens[start:end])
-            yield edit_token_func(original, correction, err_type)
+            yield edit_token_func(Edit(original, correction, err_type))
         last = end
     if last < len(tokens):
         yield ' '.join(tokens[last:])
