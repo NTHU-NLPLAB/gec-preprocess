@@ -2,6 +2,8 @@
 import re
 from bs4 import BeautifulSoup
 
+from .edit import Edit
+
 
 FCE_EDIT_RE = re.compile(r'<NS type="\w+">(((?!<NS).)*?)</NS>')
 
@@ -19,16 +21,16 @@ def parse_ns_token(ns_token):
         ori = ns_node.i.decode_contents().strip() if ns_node.i else ''
         cor = ns_node.c.decode_contents().strip() if ns_node.c else ''
 
-    return ori, cor, err_type
+    return Edit(ori, cor, err_type)
 
 
-def gen_ns_token(delete, insert, err_type=None):
+def gen_ns_token(edit: Edit):
     content = ''
-    if delete:
-        content += f"<i>{delete}</i>"
-    if insert:
-        content += f"<c>{insert}</c>"
-    return f"<NS type=\"{err_type}\"></NS>"
+    if edit.delete:
+        content += f"<i>{edit.delete}</i>"
+    if edit.insert:
+        content += f"<c>{edit.insert}</c>"
+    return f"<NS type=\"{edit.err_type}\">{content}</NS>"
 
 
 def iter_fce_file(iterable):
