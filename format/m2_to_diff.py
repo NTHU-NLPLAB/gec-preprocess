@@ -50,6 +50,8 @@ def m2_to_diff(sent, edits):
 
 def main(iterator):
     for sent, annotation in parse_m2(iterator):
+        if len(annotation) == 0:
+            print(sent)
         for annotator, edits in annotation.items():
             print(' '.join(m2_to_diff(sent, edits)))
 
