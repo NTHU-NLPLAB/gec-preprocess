@@ -14,7 +14,7 @@ setup(
     # long_description=long_description,
     # long_description_content_type="text/markdown",
     url="https://github.com/NTHU-NLPLAB/gec-preprocess",
-    packages=["gecpt"],
+    packages=["gecpt", "gecpt.format", "gecpt.parse"],
     install_requires=['beautifulsoup4'],
     classifiers=[
         "Programming Language :: Python :: 3",
