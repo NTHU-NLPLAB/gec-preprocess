@@ -23,7 +23,7 @@ def _gen_diff_iter(delete, insert, err_type=None, space_escape='\u3000'):
         yield f"[-{space_escape.join(delete.split())}-]"
     if insert:
         yield f"{{+{space_escape.join(insert.split())}+}}"
-    if delete and insert and err_type:
+    if (delete or insert) and err_type:
         yield f"({space_escape.join(err_type.split())})"
 
 
