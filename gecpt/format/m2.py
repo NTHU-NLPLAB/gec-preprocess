@@ -52,7 +52,7 @@ def parse_m2_record(m2_record):
     annotations = map(parse_m2_token, edit_strings)
     annotations = sorted(annotations, key=itemgetter(-1))
     for annotator, edits in groupby(annotations, key=itemgetter(-1)):
-        yield sentence, edits
+        yield sentence, tuple(edits)
 
 
 def iter_m2_file(iterable):
