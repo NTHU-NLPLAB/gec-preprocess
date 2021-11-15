@@ -5,7 +5,7 @@ You can use it to convert learner corpora from one format to the other (e.g., xm
 ## Install gec-preprocess
 
 ```bash
-pip install https://github.com/NTHU-NLPLAB/gec-preprocess/archive/master.zip
+pip install https://github.com/NTHU-NLPLAB/gec-preprocess/archive/main.zip
 ```
 
 ## Usage
