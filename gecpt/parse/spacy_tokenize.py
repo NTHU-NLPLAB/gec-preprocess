@@ -12,8 +12,8 @@ def init_tokenizer():
     from spacy.lang.en import English
     from spacy.attrs import ORTH
     # nlp = spacy.load(os.environ.get('SPACY_MODEL', 'en'), disable=['tagger', 'ner'])
-    # TODO: this may have compatibility issue
-    tokenizer = English().Defaults.create_tokenizer()
+    nlp = English()
+    tokenizer = nlp.tokenizer
     #  add special segmenting case for spacy tokenizer
     tokenizer.add_special_case('I.',  [{ORTH: "I"}, {ORTH: "."}])
     for token in RESERVED_TOKENS:
