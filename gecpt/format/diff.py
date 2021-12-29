@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
+from copy import copy
 import re
 
 from .edit import Edit
@@ -31,7 +32,7 @@ def gen_diff_token(edit: Edit, space_escape='\u3000'):
     return ''.join(_gen_diff_iter(**edit._asdict(), space_escape=space_escape))
 
 
-def _iter_diff(text, edit_token_function):
+def _iter_diff(text, edit_token_function=copy):
     # split into tokens
     tokens = text.split(' ') if type(text) is str else text
     # skip empty tokens
@@ -42,11 +43,12 @@ def _iter_diff(text, edit_token_function):
             yield token
 
 
-def iter_diff(iterable, edit_token_function, skip_empty=True):
+def iter_diff(iterable, edit_token_function=copy, skip_empty=True):
+    result = _iter_diff(iterable, edit_token_function)
     if skip_empty:
-        return filter(None, _iter_diff(iterable, edit_token_function))
+        return filter(None, result)
     else:
-        return _iter_diff(iterable, edit_token_function)
+        return result
 
 
 def diff_to_parallel(text, return_list=False):
