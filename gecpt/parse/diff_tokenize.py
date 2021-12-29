@@ -5,6 +5,7 @@ from itertools import chain
 
 from .sent_tokenize_lm import sent_tokenize, word_tokenize
 from .utils import recover_quotewords
+from ..format.edit import Edit
 from ..format.utils import restore_line_break, nested_html_unescape, normalize_hash
 from ..format.diff import parse_diff_token, gen_diff_token
 
@@ -17,7 +18,8 @@ def tokenize_edit(edit_token):
     # tokenize text in edit token
     delete = word_tokenize(delete, return_str=True)
     insert = word_tokenize(insert, return_str=True)
-    return gen_diff_token(delete, insert, err_type)
+    edit = Edit(delete, insert, err_type)
+    return gen_diff_token(edit)
 
 
 def mask_edits(text):
