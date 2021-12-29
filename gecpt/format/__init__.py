@@ -36,9 +36,7 @@ def _convert_xml(xmltext, edit_re, parse_edit, edit_token_func, ignore_type=()):
         for change_token in change_tokens:
             e = parse_edit(change_token)
 
-            # TODO: flattern nested edits
-            # delete = ' '.join(iter_diff(e.delete, itemgetter(0)))
-            # insert = ' '.join(iter_diff(e.insert, itemgetter(1)))
+            e = Edit(' '.join(iter_diff(e.delete, itemgetter(0))), e.insert, e.err_type)
 
             # if the error is to be ignored
             if any(t in ignore_type for t in e.err_type.split(',')):
