@@ -6,7 +6,7 @@ import re
 from .edit import Edit
 
 
-DIFF_EDIT_RE = re.compile(r'(\[-(?P<delete>[^ ]*?)-\]|\{\+(?P<insert>[^ ]*?)\+\})+(\((?P<type>[^)]+)\))?')
+DIFF_EDIT_RE = re.compile(r'(\[-(?P<delete>.*?)-\]|\{\+(?P<insert>.*?)\+\})+(\((?P<type>.*?)\))?')
 
 
 def parse_diff_token(edit_token):
