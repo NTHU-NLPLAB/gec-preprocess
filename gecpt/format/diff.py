@@ -9,9 +9,9 @@ from .edit import Edit
 DIFF_EDIT_RE = re.compile(r'(\[-(?P<delete>.*?)-\]|\{\+(?P<insert>.*?)\+\})+(\((?P<type>.*?)\))?')
 
 
-def parse_diff_token(edit_token):
-    match = DIFF_EDIT_RE.match(edit_token)
-    assert match, f'"{edit_token}" is not a valid edit token'
+def parse_diff_token(token):
+    match = token if type(token) is re.Match else DIFF_EDIT_RE.match(token)
+    assert match, f'"{token}" is not a valid edit token'
     delete, insert, err_type = match.group('delete'), match.group('insert'), match.group('type')
     delete = ' '.join(delete.split()) if delete else ''
     insert = ' '.join(insert.split()) if insert else ''
