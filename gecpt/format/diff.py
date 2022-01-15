@@ -49,7 +49,9 @@ def _iter_diff(text, edit_token_function=copy):
     tokens = text.split(' ') if type(text) is str else text
     # skip empty tokens
     for token in filter(None, tokens):
-        if token.startswith(('{+', '[-')):
+        if type(token) is Edit:
+            yield edit_token_function(token)
+        elif token.startswith(('{+', '[-')):
             yield edit_token_function(parse_diff_token(token))
         else:
             yield token
