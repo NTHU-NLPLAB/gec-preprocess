@@ -32,6 +32,18 @@ def gen_diff_token(edit: Edit, space_escape='\u3000'):
     return ''.join(_gen_diff_iter(**edit._asdict(), space_escape=space_escape))
 
 
+def iter_diff_text(text):
+    def __iter():
+        last = 0
+        for match in DIFF_EDIT_RE.finditer(text):
+            yield text[last:match.start()]
+            yield parse_diff_token(match)
+            last = match.end()
+        yield text[last:]
+
+    return filter(None, __iter())
+
+
 def _iter_diff(text, edit_token_function=copy):
     # split into tokens
     tokens = text.split(' ') if type(text) is str else text
